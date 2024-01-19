@@ -20,9 +20,9 @@ const form = ref<ContactForm>({
   message: '',
 });
 
-const submitForm = () => {
-  alert(`Ello m8`);
-};
+// const submitForm = () => {
+//   alert(`Ello m8`);
+// };
 </script>
 
 <style scoped>
