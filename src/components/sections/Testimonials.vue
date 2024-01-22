@@ -2,7 +2,7 @@
   <div class="testimonials my-5">
     <div class="container-xxl">
       <h2 class="h3 mb-4 text-center">What Our Clients Say</h2>
-      <Carousel :items-to-show="3" :center-mode="true" ref="carousel" v-model="currentSlide" :wrapAround="true" :autoplay="5000" v-auto-animate>
+      <Carousel :items-to-show="3" :center-mode="true" ref="carousel" pause-autoplay-on-hover v-model="currentSlide" :wrapAround="true" :autoplay="5000" v-auto-animate>
         <Slide v-for="(testimonial, index) in testimonials" :key="testimonial.id">
           <div 
             class="carousel__item" 
