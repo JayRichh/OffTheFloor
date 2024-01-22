@@ -1,7 +1,7 @@
 <template>
     <div class="header-content container" v-auto-animate>
       <h2 class="hero-heading pb-5">Welcome</h2>
-      <p class="hero-subheading mt-4">We are a fun friendly studio teaching Aerial Hoop, Aerial Silks, Pole, Sky Pole, Trapeze among for adults, children and families.</p>
+      <p class="hero-subheading mt-5">We are a fun friendly studio teaching Aerial Hoop, Aerial Silks, Pole, Sky Pole, Trapeze among for adults, children and families.</p>
       <button class="btn btn-primary d-flex ms-auto">More Info.</button>
     </div>
 </template>
@@ -14,7 +14,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 30vh;
+  top: 40vh;
   right: 4rem;
   width: 60%;
   text-align: right;
@@ -57,10 +57,10 @@
 }
 
 .btn-primary:hover {
-  background-color: #19ade73f;
+  background-color: var(--color-primary);
 }
 .btn-primary:active {
-  border-color: tan;
+  border-color: var(--color-secondary);
   transform: translateY(2px)
 }
 </style>

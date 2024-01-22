@@ -1,13 +1,18 @@
 <template>
-  <div class="services-section container-xl">
+  <div class="services-section ">
     <div class="services-hero">
       <h2>Classes & Timetable</h2>
       <p>Explore a range of classes and sessions we offer.</p>
-      <router-link class="" to="/classes">
-        <button class="view-session-btn btn btn-secondary-outline border">View Here</button>
-      </router-link>
+      <div class="buttons-container">
+        <router-link class="" to="/classes">
+          <button class="view-session-btn btn btn-secondary-outline border" v-auto-animate>View Sessions</button>
+        </router-link>
+        <router-link class="" to="/classes">
+          <button class="view-session-btn btn btn-secondary-outline border" v-auto-animate>Go To FAQ</button>
+        </router-link>
       </div>
-    
+    </div>
+
     <div class="services-grid">
       <div class="service-item">
         <img src="@/assets/neil.jpg" alt="Aerial Hoop" class="service-image">
@@ -41,10 +46,6 @@
   position: relative;
   z-index: 200;
   height: 20vh;
-  padding-top: 2rem;
-  /*background-image: url('path-to-hero-background.jpg');
-  background-size: cover;
-  background-position: center;*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,7 +98,8 @@
 }
 
 .view-session-btn {
-  transition: all 0.2px ease;
+  transition: transform 0.3s ease-in-out;
+  margin: 10px;
   &:hover {
     transform: translateY(-3px);
   }

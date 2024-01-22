@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-smoke border-bottom" :style="navbarStyle" v-auto-animate>
-    <div class="container ">
+  <nav :class="['navbar navbar-expand-lg navbar-dark border-bottom', { 'home-route': isHomeRoute }]" :style="navbarStyle">
+    <div class="container " style="">
       <a class="navbar-brand" href="/">
         <img src="../../assets/transparent-logo.png" class="logo-img" />
       </a>
@@ -12,23 +12,23 @@
 
       <div class="collapse navbar-collapse justify-content-center align-items-center" :class="{ show: isDropdownOpen && !isScrolled }">
         <!-- Navigation links -->
-        <ul class="navbar-nav mb-2 mb-lg-0" v-auto-animate>
+        <ul class="navbar-nav mb-2 primary-nav" v-auto-animate>
           <li class="nav-item">
-            <router-link class="nav-link" to="/">Home</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/classes">Classes</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/classes">Classes</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/updates">Updates</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/updates">Updates</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/contact-us">Contact & Location</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/contact-us">Contact & Location</router-link>
           </li>
         </ul>
 
         <!-- Booking button and Social icons -->
-        <div class="d-flex justify-content-center" v-show="!isScrolled">
+        <div class="d-flex justify-content-center flex-shrink-0" v-show="!isScrolled">
           <div class="col-container">
     
             <div class="icon-container d-flex mt-lg-3 mobile-icons" v-auto-animate>
@@ -49,25 +49,27 @@
   </nav>
 
   <template v-if="isScrolled">
-    <nav class="secondary-navbar overflow-hidden" id="mate" :class="{ 'show': isScrolled }" v-auto-animate>
+
+    <nav class="secondary-navbar overflow-hidden" id="mate" :style="navbarSecondaryStyle" :class="{ 'show': isScrolled }" v-auto-animate>
+
       <div class="container d-flex justify-content-between">
         <ul class="navbar-nav d-flex align-items-center">
           <li class="nav-item d-block w-auto">
-            <router-link class="nav-link" to="/">Home</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item d-block w-auto">
-            <router-link class="nav-link" to="/classes">Classes</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/classes">Classes</router-link>
           </li>
           <li class="nav-item d-block w-auto">
-            <router-link class="nav-link" to="/updates">Updates</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/updates">Updates</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/contact-us">Updates</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/contact-us">Updates</router-link>
           </li>
         </ul>
         <button class="navbar-toggler" type="button" @click="toggleSecondaryDropdown">
           <span class="navbar-toggler-icon" :class="{ 'open': isSecondaryDropdownOpen }"></span>
-      </button>
+        </button>
       </div>
       <div class="d-flex align-items-center">
         <!-- Secondary Togglies -->
@@ -89,11 +91,16 @@
 
 <script setup lang="ts">
  import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const isDropdownOpen = ref(false)
 const isSecondaryDropdownOpen = ref(false)
+const isMobileDropdownOpen = ref(false)
 const isScrolled = ref(false)
 const scrollY = ref(0);
+const route = useRoute()
+const currentPath = computed(() => route.path)
+const isHomeRoute = computed(() => currentPath.value === '/');
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
@@ -101,12 +108,15 @@ const toggleDropdown = () => {
 
 const toggleSecondaryDropdown = () => {
   isSecondaryDropdownOpen.value = !isSecondaryDropdownOpen.value
-  console.log("eaeae")
 }
+
+const toggleMobileDropdown = () => {
+  isMobileDropdownOpen.value = !isMobileDropdownOpen.value;
+};
 
 const handleScroll = () => {
   scrollY.value = window.scrollY
-  if (window.scrollY > 175) {
+  if (window.scrollY > 185) {
     isScrolled.value = true
   } else {
     isScrolled.value = false
@@ -114,19 +124,16 @@ const handleScroll = () => {
 };
 
 const animateIcons = () => {
-  let els: any
-  els = [...document.querySelectorAll('.secondary-dropdown i'), ...document.querySelectorAll('.secondary-dropdown button')]
-  els.reverse().forEach((elemont, _) => {
+  let els = null as any
+  els = [...document.querySelectorAll('.secondary-dropdown i'), ...document.querySelectorAll('.secondary-dropdown button')];
+  els.reverse().forEach((element, index) => {
+    element.style.transitionDelay = `${index * 100}ms`;
     if (!isSecondaryDropdownOpen.value) {
-      elemont.style.transform = 'translateY(100%)';
-      elemont.style.opacity = 0
-    }
-    els.forEach((elemont, index) => {
-      elemont.style.transitionDelay = `${index * 100}ms`;
-    })
-    if (isSecondaryDropdownOpen.value) {
-      elemont.style.transform = 'translateX(0)';
-      elemont.style.opacity = 1
+      element.style.transform = 'translateY(-100%)'; // Move up (hide)
+      element.style.opacity = 0;
+    } else {
+      element.style.transform = 'translateY(0)'; // Move down (show)
+      element.style.opacity = 1;
     } 
   });
 };
@@ -137,34 +144,72 @@ watch(isSecondaryDropdownOpen, () => {
 
 const navbarStyle = computed(() => {
   let opacity = 0.8;
-  if (scrollY.value > 0 && scrollY.value < 175) {
-    opacity = 0.8 - (scrollY.value / 175) * 0.8;
-  } else if (scrollY.value >= 175) {
+  if (scrollY.value > 0 && scrollY.value < 185) {
+    opacity = 0.8 - (scrollY.value / 185);
+  } else if (scrollY.value >= 185) {
     opacity = 0;
   }
-  return { opacity: opacity.toString() };
+  const backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+  return { backgroundColor };
+});
+
+const navbarSecondaryStyle = computed(() => {
+  // start 200px from 0, another 100px be at 0.8.
+  let opacity = 0;
+  if (scrollY.value > 185) {
+    opacity = (scrollY.value - 185) / 100;
+  }
+  const backgroundColor = `rgba(245, 245, 245, ${opacity})`;
+  return { backgroundColor };
 });
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  
-})
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
-
-
 </script>
 
 <style lang="scss" scoped>
-navbar * {
-  overflow: hidden !important
+nav {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  &.home-route {
+    margin-bottom: -12rem;
+  }
+}
+.navbar * {
+  overflow: hidden !important;
+}
+.router-active {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    margin-bottom: 0px;
+  }
 }
 #joinButton {
   text-align: center;
   cursor: pointer;
   transition: box-shadow 1s ease-in-out;
+  z-index: 5;
   &:hover {
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
   }
@@ -206,18 +251,46 @@ navbar * {
 }
 .navbar {
   font-family: 'Arial', sans-serif; 
-  background-color: rgba(245, 245, 245);
   z-index: 2;
 }
-
 .nav-link {
   color: rgb(53, 53, 53);
   text-align: center;
   transition: color 0.3s ease, background-color 0.3s ease;
   width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  margin-bottom: 2px;
 }
+
+.nav-link:hover {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  margin-bottom: 0px;
+}
+
 .nav-placeholder {
   flex: 1;
+}
+.primary-nav {
+  position: absolute;
+  top: 5rem;
+  left: 50vw;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  z-index: 99;
+  transition: opacity 0.3s ease-in-out;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .secondary-navbar {
   position: fixed;
@@ -231,6 +304,9 @@ navbar * {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   transform: translateY(-100%);
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out;
+
   &.show {
     opacity: 1;
     transform: translateY(0);
@@ -278,7 +354,7 @@ navbar * {
 
 .secondary-dropdown {
   position: absolute;
-  right: 10rem;
+  right: 13vw;
   display: flex;
   width: auto;
   z-index: 2222;
@@ -308,8 +384,36 @@ navbar * {
   }
 }
 
+.mobile-dropdown {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 60px; // Adjust according to your navbar height
+  width: 100%;
+  background-color: white;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(-100%); // Start off-screen
+  z-index: 1000; // Ensure it's above other content
+
+  .nav-item {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-toggler {
+    display: block; // Show only on mobile
+  }
+
+  .mobile-dropdown {
+    display: block; // Enable dropdown on mobile
+    transform: translateY(0); // Adjust position based on toggle state
+  }
+}
+
 .navbar-toggler {
   order: 1;
+
 }
 
 .secondary-navbar .navbar-nav {
@@ -372,7 +476,7 @@ navbar * {
 .secondary-dropdown i,
 .secondary-dropdown button {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateY(-100%); // Initial state above the view
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
@@ -399,7 +503,7 @@ navbar * {
   justify-self: center;
   &:hover {
     color: rgba(3, 29, 51, 0.795);
-    background-color: darken(#22a7db0e, 5%);
+    background-color: var(--color-primary);
   }
 }
 

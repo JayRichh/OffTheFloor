@@ -1,35 +1,50 @@
 <template>
   <div class="testimonials my-5">
-    <div class="container">
+    <div class="container-xxl">
       <h2 class="h3 mb-4 text-center">What Our Clients Say</h2>
-      <div class="carousel-container" v-auto-animate>
-        <transition-group name="carousel" tag="div" class="carousel-inner">
-          <div
-            v-for="(testimonial, index) in testimonials"
-            :key="testimonial.id"
-            v-show="isTestimonialVisible(index)"
-            :class="getItemClass(index)"
-          >
-            <div class="card mb-3">
-              <div class="card-body">
-                <blockquote class="blockquote mb-0">
-                  <p>{{ testimonial.quote }}</p>
-                  <footer class="blockquote-footer">{{ testimonial.author }}</footer>
-                </blockquote>
-              </div>
+      <Carousel :items-to-show="3" :center-mode="true" ref="carousel" v-model="currentSlide" :wrapAround="true" :autoplay="5000" v-auto-animate>
+        <Slide v-for="(testimonial, index) in testimonials" :key="testimonial.id">
+          <div 
+            class="carousel__item" 
+            :class="{
+              'is-side': isSideSlide(index),
+              'is-active': index === currentSlide,
+            }">
+            <div class="card-carousel__body">
+              <blockquote class="blockquote">
+                <p class="testimonial-quote">{{ testimonial.quote }}</p>
+                <footer class="blockquote-footer">
+                  {{ testimonial.author }}
+                  <span class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </span>
+                </footer>
+              </blockquote>
             </div>
           </div>
-        </transition-group>
+        </Slide>
+      </Carousel>
+
+      <div class="d-flex justify-content-center align-items-center mt-3 gap-4">
+        <button class="btn btn-primary" style="background-color: transparent; border: none; color: #007bff;" @click="prev">
+          Prev
+        </button>
+        <button class="btn btn-primary" style="background-color: transparent; border: none; color: #007bff;" @click="next">
+          Next
+        </button>
       </div>
     </div>
-    <Map class="my-5" />
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import Map from './Map.vue';
+import { ref, computed } from 'vue';
+import { Carousel, Slide } from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css';
 
 interface Testimonial {
   id: number;
@@ -37,87 +52,162 @@ interface Testimonial {
   quote: string;
 }
 
+const currentSlide = ref(1);
+
+const isSideSlide = (index) => {
+  const total = testimonials.value.length;
+  const prevIndex = (currentSlide.value - 1 + total) % total;
+  const nextIndex = (currentSlide.value + 1) % total;
+  return index === prevIndex || index === nextIndex;
+};
+
+const next = () => {
+  currentSlide.value = (currentSlide.value + 1) % testimonials.value.length;
+};
+
+const prev = () => {
+  currentSlide.value = (currentSlide.value - 1 + testimonials.value.length) % testimonials.value.length;
+};
+
 const testimonials = ref<Testimonial[]>([
-  { id: 1, author: 'John Doe', quote: 'This company is amazing! They transformed our business.' },
-  { id: 2, author: 'Jane Smith', quote: 'Highly professional team and outstanding service.' },
-  { id: 3, author: 'Michael Brown', quote: 'I am very impressed with their work.' },
-  { id: 4, author: 'Emma Johnson', quote: 'The best company I have ever worked with.' },
-  { id: 5, author: 'Lucas White', quote: 'Their customer service is top-notch.' },
-  { id: 6, author: 'Sophia Green', quote: 'I highly recommend them to anyone.' },
+  {
+    id: 1,
+    author: "Helen R Young",
+    quote: "What a place! The sense of camaraderie between the students is like nothing I've experienced. My daughter spends all week asking when she can go back. Gemma is phenomenal as an instructor and genuinely decent human being. Such a refreshing change to the usual dancing/gymnastics cliques. I cannot recommended Gemma and herJunior Instructions enough."
+  },
+  {
+    id: 2,
+    author: "Alisha Asquith",
+    quote: "I’ve been going to the studio for two years now. I love training here and it’s perfect for any skill level. If you are thinking about taking up pole, hoop or silks this is the perfect place to give it a try no prior training is needed and Gemma is super supportive throughout."
+  },
+  {
+    id: 3,
+    author: "Sie Christian",
+    quote: "Excellent  place if you are into hoop and aerial. Gemma is an excellent teacher catering to individual  students needs."
+  },
+  {
+    id: 4,
+    author: "Charlotte Dowson",
+    quote: "Never felt more energised after dancing, caters for everyone's needs and has a brilliant social side to it too. Nothing is too much for Gemma and feeling more confident every time I go."
+  },
+  {
+    id: 5,
+    author: "Trinity Brown",
+    quote: "The most amazing place on the planet fantastic Gemma the owner and coach is the nicest person you could ever meet and all the kids and mams and dads love her fabulous coach as well everyone is welcome with open arms it’s like one big happy family with some incredible aerial skills on show."
+  },
+  {
+    id: 6,
+    author: "Sashenka lindridge",
+    quote: "Grate place to go everyone is every friendly there gemma is amazing at teaching x."
+  },
+  {
+    id: 7,
+    author: "Maurice brazell",
+    quote: "Attend first session after Christmas break the kids and trainers are full on and everyone had a wonderful session."
+  },
+  {
+    id: 8,
+    author: "Claire Brazell",
+    quote: "Super Fun environment, well priced. A wide range of ages/experience levels of the students."
+  },
+  {
+    id: 9,
+    author: "Vanessa Hill",
+    quote: "Sadly had to move away and couldn't go anymore but great facilities, lovely people and atmosphere! Would go back if I could!"
+  },
+  {
+    id: 10,
+    author: "Mark Harrington",
+    quote: "Amazing love coming here Gemma is a legend x."
+  }
 ]);
 
-const activeIndex = ref(0);
-const leftIndex = ref(testimonials.value.length - 1);
-const rightIndex = ref(1);
-let intervalId: any;
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
-const isTestimonialVisible = (index: number) => {
-  return index === leftIndex.value || index === activeIndex.value || index === rightIndex.value;
-};
+const shuffledTestimonials = shuffleArray(testimonials.value.map((testimonial, index) => ({
+  ...testimonial,
+  id: index + 1,
+})));
 
-onMounted(() => {
-  intervalId = setInterval(() => {
-    activeIndex.value = (activeIndex.value + 1) % testimonials.value.length;
-    leftIndex.value = (activeIndex.value - 1 + testimonials.value.length) % testimonials.value.length;
-    rightIndex.value = (activeIndex.value + 1) % testimonials.value.length;
-  }, 5000);
-});
-
-onUnmounted(() => {
-  clearInterval(intervalId);
-});
-
-const getItemClass = (index: number) => {
-  if (index === leftIndex.value) return 'left';
-  if (index === activeIndex.value) return 'active';
-  if (index === rightIndex.value) return 'right';
-  return 'hidden';
-};
 </script>
 
-<style scoped>
-.carousel-container {
+<style scoped lang="scss">
+.testimonials {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
   position: relative;
   overflow: hidden;
+
+  .carousel__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    margin: 0 1rem;
+    &.is-active {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .testimonial-quote {
+      font-size: 1.25rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0));
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(to right, rgba(245, 245, 245, 0), rgba(245, 245, 245, 0.5));
+    }
+
+    &.is-side:first-child {
+      transform: scale(0.8) !important;
+      opacity: 0.5;
+    }
+
+    &.is-side:not(:first-child) {
+      background: linear-gradient(to bottom, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0.5));
+    }
+  }
 }
 
-.carousel-inner {
-  display: flex;
-  justify-content: center;
-}
-
-.carousel-item {
-  position: absolute;
-  width: 100%;
-  opacity: 0;
-  transition: all 1s ease;
-}
-
-.carousel-item.active {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.carousel-item.left, .carousel-item.right {
-  opacity: 0.5; /* Adjust the opacity for non-active items */
-}
-
-.carousel-item.right {
-  transform: translateX(0); /* Keep the right item in place, only change the opacity */
-}
-
-.carousel-item.hidden {
-  display: none;
-}
-
-.carousel-enter-active,
-.carousel-leave-active {
-  transition: all 1s ease;
-}
-
-.carousel-enter-from,
-.carousel-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
+@media (max-width: 768px) {
+  .testimonials {
+    .container-xxl {
+      .carousel__item {
+        height: auto; // Adjust height for smaller screens
+      }
+    }
+  }
 }
 </style>
+

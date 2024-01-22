@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import Hero from '../components/layout/Hero.vue';
 import Header from '../components/layout/Header.vue';
 import Testimonials from '../components/sections/Testimonials.vue';
@@ -21,8 +22,9 @@ import FAQ from '../components/sections/FAQ.vue';
 
 <style scoped>
 .video-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
-  height: auto;
+  height: 100vh;
 }
 </style>

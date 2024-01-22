@@ -23,6 +23,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+// @ts-ignore
 import timetableData from '@/data/timetable';
 
 import set1 from '@/assets/set1.png';

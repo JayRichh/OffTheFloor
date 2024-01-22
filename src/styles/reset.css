@@ -5,3 +5,12 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+.carousel,
+.carousel * {
+  margin: initial;
+  padding: initial;
+  overflow-x: initial;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}

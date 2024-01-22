@@ -57,15 +57,13 @@ onMounted(async () => {
   await nextTick();
   await loadVideo();
 });
-
-
 </script>
 
 <style scoped lang="scss">
 .hero {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 64px); /* Subtract the height of the navbar */
   overflow: hidden;
   pointer-events: none;
   opacity: 0.8;
@@ -74,12 +72,12 @@ onMounted(async () => {
 
   &::after {
     content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0rem;
-  height: 100px;
-  background: linear-gradient(to bottom, transparent, #ffffff)
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0rem;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, #ffffff);
   }
 }
 
