@@ -34,14 +34,14 @@ function createMap(mapElement: HTMLElement) {
   // });
 }
 
-function createMarker(map: google.maps.Map) {
-  const location = { lat: 54.68589798027588, lng: -1.2300596845324088 };
-  return new google.maps.Marker({
-    position: location,
-    map: map,
-    title: 'Off The Floor Aerial Arts',
-  });
-}
+// function createMarker(map: google.maps.Map) {
+//   const location = { lat: 54.68589798027588, lng: -1.2300596845324088 };
+//   return new google.maps.Marker({
+//     position: location,
+//     map: map,
+//     title: 'Off The Floor Aerial Arts',
+//   });
+// }
 </script>
 
 <style scoped>
