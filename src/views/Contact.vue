@@ -4,7 +4,8 @@
     <p class="lead">Get in touch with us for any inquiries or support.</p>
     <div class="row">
       <div class="col-lg-8 mx-auto">
-        <contact-form />
+        <ContactForm />
+        <Map />
       </div>
     </div>
   </div>
@@ -12,6 +13,7 @@
 
 <script setup lang="ts">
 import ContactForm from '../components/sections/ContactForm.vue';
+import Map from '../components/sections/Map.vue';
 </script>
 
 <style scoped>

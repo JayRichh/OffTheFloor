@@ -1,37 +1,28 @@
 <template>
   <Navbar />
-  <router-view :key="uniqueKey" />
+  <router-view :key="uniqueKey" v-auto-animate @change="onChange"/>
+  <ScrollToTop />
   <Footer />
 </template>
 
 <script setup lang="ts">
-import { onMounted, toRefs } from 'vue';
+import { onMounted, toRefs, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from './components/common/Navbar.vue';
 import Footer from './components/common/Footer.vue';
+import ScrollToTop from './components/common/ScrollToTop.vue';
 
 const route = useRoute();
-const uniqueKey = crypto.randomUUID()
+const uniqueKey = ref(crypto.randomUUID())
+
+const onChange = () => {
+  uniqueKey.value += crypto.randomUUID()
+}
 
 onMounted(()=>{
   const { fullPath } = toRefs(route);
-  console.log(fullPath)
+  console.log(fullPath, route.toString())
   
 })
 </script>
 
-<style lang="scss">
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-
-</style>

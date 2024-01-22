@@ -1,6 +1,11 @@
 <template>
-  <Header />
-  <Hero />
+  <div class="video-header">
+    <Suspense>
+      <Hero />
+    </Suspense>
+    <Header />
+  </div>
+  
   <ServicesSection />
   <Testimonials />
   <FAQ />
@@ -15,4 +20,9 @@ import FAQ from '../components/sections/FAQ.vue';
 </script>
 
 <style scoped>
+.video-header {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
 </style>

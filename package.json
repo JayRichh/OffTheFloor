@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
@@ -17,7 +19,9 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@types/node": "^20.11.5",
     "@vitejs/plugin-vue": "^4.5.2",
+    "gh-pages": "^6.1.1",
     "sass": "^1.70.0",
     "sass-loader": "^14.0.0",
     "typescript": "^5.2.2",
