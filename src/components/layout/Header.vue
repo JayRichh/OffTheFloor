@@ -1,15 +1,16 @@
 <template>
-    <div class="header-content container" v-auto-animate>
-      <h2 class="hero-heading pb-5">Welcome</h2>
-      <p class="hero-subheading mt-5">We are a fun friendly studio teaching Aerial Hoop, Aerial Silks, Pole, Sky Pole, Trapeze among for adults, children and families.</p>
-      <button class="btn btn-primary d-flex ms-auto">More Info.</button>
-    </div>
+  <div class="header-content container" v-auto-animate>
+    <div class="content-overlay"></div>
+    <h2 class="hero-heading pb-5">Welcome</h2>
+    <p class="hero-subheading mt-5">We are a fun friendly studio teaching Aerial Hoop, Aerial Silks, Pole, Sky Pole, Trapeze among for adults, children and families.</p>
+    <button class="btn btn-primary d-flex ms-auto">More Info.</button>
+  </div>
 </template>
 
 <script setup lang="ts">
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .header-content {
   position: absolute;
   display: flex;
@@ -22,6 +23,27 @@
   animation: fadeIn 1s ease-in-out;
   overflow: hidden;
   padding: 0 0 1rem 0;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    right: 0;
+    padding: 0 1rem 1rem 1rem;
+    background-color: #0000003a;
+    backdrop-filter: blur(3px);
+    padding: 4rem 1rem;
+    // fade top and bottom
+    .content-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent, #ffffff00);
+      z-index: 1;
+    }
+
+    
+  }
 }
 
 @keyframes fadeIn {

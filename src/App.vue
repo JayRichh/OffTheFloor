@@ -1,6 +1,6 @@
-<template>
+<template v-auto-animate>
   <Navbar />
-  <router-view :key="uniqueKey" v-auto-animate/>
+  <router-view :key="uniqueKey" />
   <ScrollToTop />
   <Footer />
 </template>

@@ -1,6 +1,6 @@
 <template>
   <nav :class="['navbar navbar-expand-lg navbar-dark border-bottom', { 'home-route': isHomeRoute }]" :style="navbarStyle">
-    <div class="container " style="">
+    <div class="container-xxl" style="">
       <a class="navbar-brand" href="/">
         <img src="../../assets/transparent-logo.png" class="logo-img" />
       </a>
@@ -23,7 +23,10 @@
             <router-link active-class="router-active" class="nav-link" to="/updates">Updates</router-link>
           </li>
           <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/contact-us">Contact & Location</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/contact-us">Contact</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link active-class="router-active" class="nav-link" to="/faq">FAQ</router-link>
           </li>
         </ul>
 
@@ -50,12 +53,12 @@
 
   <template v-if="isScrolled">
 
-    <nav class="secondary-navbar overflow-hidden" id="mate" :style="navbarSecondaryStyle" :class="{ 'show': isScrolled }" v-auto-animate>
+    <nav class="secondary-navbar overflow-hidden container-xl" id="mate" :style="navbarSecondaryStyle" :class="{ 'show': isScrolled }" v-auto-animate>
 
-      <div class="container d-flex justify-content-between">
+      <div class="container d-flex justify-content-between p-0">
         <ul class="navbar-nav d-flex align-items-center">
           <li class="nav-item d-block w-auto">
-            <router-link active-class="router-active" class="nav-link" to="/">Home</router-link>
+            <router-link active-class="router-active" class="nav-link" to="/" style="">Home</router-link>
           </li>
           <li class="nav-item d-block w-auto">
             <router-link active-class="router-active" class="nav-link" to="/classes">Classes</router-link>
@@ -66,8 +69,11 @@
           <li class="nav-item">
             <router-link active-class="router-active" class="nav-link" to="/contact-us">Updates</router-link>
           </li>
+          <li class="nav-item">
+            <router-link active-class="router-active" class="nav-link" to="/faq">FAQ</router-link>
+          </li>
         </ul>
-        <button class="navbar-toggler" type="button" @click="toggleSecondaryDropdown">
+        <button class="navbar-toggler me-2 mt-1" type="button" @click="toggleSecondaryDropdown">
           <span class="navbar-toggler-icon" :class="{ 'open': isSecondaryDropdownOpen }"></span>
         </button>
       </div>
@@ -149,7 +155,7 @@ const navbarStyle = computed(() => {
   } else if (scrollY.value >= 185) {
     opacity = 0;
   }
-  const backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+  const backgroundColor = `rgba(235, 235, 235, ${opacity})`;
   return { backgroundColor };
 });
 
@@ -157,9 +163,9 @@ const navbarSecondaryStyle = computed(() => {
   // start 200px from 0, another 100px be at 0.8.
   let opacity = 0;
   if (scrollY.value > 185) {
-    opacity = (scrollY.value - 185) / 100;
+    opacity = (scrollY.value - 185) / 80;
   }
-  const backgroundColor = `rgba(245, 245, 245, ${opacity})`;
+  const backgroundColor = `rgba(235, 235, 235, ${opacity})`;
   return { backgroundColor };
 });
 
@@ -200,18 +206,17 @@ nav {
 .router-active {
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 
-  &:hover {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-    margin-bottom: 0px;
-  }
 }
 #joinButton {
   text-align: center;
   cursor: pointer;
   transition: box-shadow 1s ease-in-out;
   z-index: 5;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #333333;
+  color: #ffffff;
   &:hover {
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
   }
 }
 .logo-img {
@@ -250,7 +255,6 @@ nav {
   padding-right: 5px;
 }
 .navbar {
-  font-family: 'Arial', sans-serif; 
   z-index: 2;
 }
 .nav-link {
@@ -261,9 +265,6 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Arial', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
   margin: 10px;
   margin-bottom: 1rem;
   text-decoration: none;
@@ -271,6 +272,7 @@ nav {
 }
 
 .nav-link:hover {
+  color: rgb(53, 53, 53);
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
   margin-bottom: 0px;
 }
@@ -299,23 +301,17 @@ nav {
   right: 0;
   width: 100%;
   height: 60px;
-  background-color: rgba(245, 245, 245, 0.815);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   transform: translateY(-100%);
-  background-color: transparent;
-  transition: background-color 0.3s ease-in-out;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 
   &.show {
     opacity: 1;
     transform: translateY(0);
-  }
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
   }
   .navbar-nav {
     display: flex;
@@ -341,8 +337,6 @@ nav {
       height: 100%;
 
       &:hover {
-        transform: scale(1.05);
-        border-bottom: rgba(116, 106, 106, 0.26)
       }
     }
   }
@@ -352,11 +346,12 @@ nav {
   }
 }
 
+
 .secondary-dropdown {
   position: absolute;
-  right: 13vw;
+  right: 4rem;
   display: flex;
-  width: auto;
+  max-width: 1320px;
   z-index: 2222;
   padding: 0;
   gap: 1rem;
@@ -364,23 +359,27 @@ nav {
   margin-top: 0;
   top: 0.5rem;
 
-  button {
-    margin-bottom: 0.5rem;
-    transition: all 0.2s ease-in-out;
-    &:hover {
-      background-color: rgba(245, 245, 245, 0.685);
-      color: black;
-      transform: translateY(-3px);
-    }
+  @media (max-width: 1320px) {
+    right: 20%;
   }
+}
+  
 
-  .fab {
-    transition: all 0.2s ease-in-out;
+button {
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: rgba(245, 245, 245, 0.685);
+    transform: translateY(-3px);
+  }
+}
 
-    &:hover {
-      transform: translateY(-3px);
-      cursor: pointer;
-    }
+.fab {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    cursor: pointer;
   }
 }
 
@@ -388,12 +387,12 @@ nav {
   display: none;
   position: absolute;
   left: 0;
-  top: 60px; // Adjust according to your navbar height
+  top: 60px; 
   width: 100%;
   background-color: white;
   transition: transform 0.3s ease-in-out;
-  transform: translateY(-100%); // Start off-screen
-  z-index: 1000; // Ensure it's above other content
+  transform: translateY(-100%); 
+  z-index: 1000;
 
   .nav-item {
     padding: 10px;

@@ -39,23 +39,19 @@ const imageImports = [set1, set2, set3, set4, set5, set6, set7];
 // Assign images to the timetable data
 const dataWithImages = timetableData.map((day, index) => ({
   ...day,
-  image: imageImports[index % imageImports.length] // Use modulo to loop over the images if there are more days than images
+  image: imageImports[index % imageImports.length]
 }));
 
 const data = ref(dataWithImages);
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 .container {
   max-width: 1140px;
   margin: auto;
 }
 
 .my-timetable {
-  font-family: 'Roboto', sans-serif;
-  
   .card {
     position: relative;
     border: none;

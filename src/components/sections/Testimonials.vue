@@ -1,42 +1,47 @@
 <template>
-  <div class="testimonials my-5">
-    <div class="container-xxl">
-      <h2 class="h3 mb-4 text-center">What Our Clients Say</h2>
-      <Carousel :items-to-show="3" :center-mode="true" ref="carousel" pause-autoplay-on-hover v-model="currentSlide" :wrapAround="true" :autoplay="5000" v-auto-animate>
-        <Slide v-for="(testimonial, index) in testimonials" :key="testimonial.id">
+  <div class="testimonials">
+    <div class="container-xxl ">
+      <h1 class="h3 my-5 text-center">What Our Clients Say</h1>
+      <Carousel
+        :items-to-show="isMobile ? 1 : isTablet ? 2.5 : 3"
+        :key="isMobile ? 1 : isTablet ? 2 : 3"
+        :autoplay="5000"
+        :center-mode="true"
+        ref="carousel"
+        pause-autoplay-on-hover
+        v-model="currentSlide"
+        v-auto-animate
+      >
+        <Slide v-for="(testimonial, index) in shuffledTestimonials" :key="testimonial.id" >
           <div 
-            class="carousel__item" 
+            class="carousel__item " 
             :class="{
-              'is-side': isSideSlide(index),
-              'is-active': index === currentSlide,
+              'is-side': index !== currentSlide,
+              'is-active': isActiveTestimonial(index),
             }">
-            <div class="card-carousel__body">
-              <blockquote class="blockquote">
-                <p class="testimonial-quote">{{ testimonial.quote }}</p>
-                <footer class="blockquote-footer">
+            <div class="card-carousel__body "
+            :style="`overflow:hidden;`">
+              <blockquote class="blockquote "
+              :style="`overflow:hidden;`">
+                <p class="testimonial-quote ">{{ testimonial.quote }}</p>
+                <footer class="blockquote-footer ">
                   {{ testimonial.author }}
                   <span class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star d-none d-md-inline"></i>
+                    <i class="fas fa-star d-none d-md-inline"></i>
+                    <i class="fas fa-star d-none d-md-inline"></i>
+                    <i class="fas fa-star d-none d-md-inline"></i>
+                    <i class="fas fa-star d-none d-md-inline"></i>
                   </span>
                 </footer>
               </blockquote>
             </div>
           </div>
         </Slide>
+        <template #addons>
+          <Navigation />
+        </template>
       </Carousel>
-
-      <div class="d-flex justify-content-center align-items-center mt-3 gap-4">
-        <button class="btn btn-primary" style="background-color: transparent; border: none; color: #007bff;" @click="prev">
-          Prev
-        </button>
-        <button class="btn btn-primary" style="background-color: transparent; border: none; color: #007bff;" @click="next">
-          Next
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -54,11 +59,11 @@ interface Testimonial {
 
 const currentSlide = ref(1);
 
-const isSideSlide = (index) => {
+const isActiveTestimonial = (index) => {
   const total = testimonials.value.length;
   const prevIndex = (currentSlide.value - 1 + total) % total;
   const nextIndex = (currentSlide.value + 1) % total;
-  return index === prevIndex || index === nextIndex;
+  return index !== prevIndex && index !== nextIndex;
 };
 
 const next = () => {
@@ -135,76 +140,141 @@ const shuffledTestimonials = shuffleArray(testimonials.value.map((testimonial, i
   id: index + 1,
 })));
 
+const isMobile = computed(() => window.innerWidth < 768);
+const isTablet = computed(() => window.innerWidth >= 768 && window.innerWidth < 1200);
+
 </script>
 
 <style scoped lang="scss">
 .testimonials {
-  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f5f5f5;
-  position: relative;
-  overflow: hidden;
-
-  .carousel__item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    margin: 0 1rem;
-    &.is-active {
-      transform: scale(1);
-      opacity: 1;
-    }
-    .testimonial-quote {
-      font-size: 1.25rem;
-      font-style: italic;
-      margin-bottom: 1rem;
-    }
-
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: rem;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    &::before {
-      left: 0;
-      background: linear-gradient(to right, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0));
-    }
-
-    &::after {
-      right: 0;
-      background: linear-gradient(to right, rgba(245, 245, 245, 0), rgba(245, 245, 245, 0.5));
-    }
-
-    &.is-side:first-child {
-      transform: scale(0.8) !important;
-      opacity: 0.5;
-    }
-
-    &.is-side:not(:first-child) {
-      background: linear-gradient(to bottom, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0.5));
+  height: 60vh;
+  
+  .carousel {
+    min-height: 100%;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    padding: 0 0 1rem 0;
+    .carousel__viewport {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+      transition: transform 0.3s ease-in-out;
+      .carousel__track {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2vw 4vw; 
+        background-color: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        margin: 1vw;
+        &
+        .testimonial-quote {
+          font-style: italic;
+          margin-bottom: 1rem;
+        }
+      }
     }
   }
 }
 
-@media (max-width: 768px) {
+.is-active {
+  transform: scale(1.2);
+  opacity: 1;
+  max-width: 100%;
+  @media (min-width: 1200px) {
+    max-width: 80%;
+  }
+  @media (min-width: 800px) {
+    font-size: 4vw;
+  }
+  @media (min-width: 2000px) {
+    transform: scale(1.3);
+  }
+}
+ 
+@media (min-width: 360px) and (max-width: 480px) {
   .testimonials {
-    .container-xxl {
-      .carousel__item {
-        height: auto; // Adjust height for smaller screens
+    .carousel__item {
+      margin: 6vw;
+      padding: 3vw; 
+
+      .testimonial-quote {
+        font-size: 4vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 480px) and (max-width: 799px) {
+  .testimonials {
+    .carousel__item {
+      margin: 6vw;
+      padding: 3vw; 
+
+      .testimonial-quote {
+        font-size: 1.8vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1199px) {
+  .testimonials {
+    padding: 2vw;
+    .carousel__item {
+      padding: 2.5vw 4vw;
+
+      .testimonial-quote {
+        font-size: 1.6vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .testimonials {
+    padding: 2vh 0;
+
+    .carousel__item {
+
+      .testimonial-quote {
+        font-size: 1.4vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 2000px) {
+  .testimonials {
+    
+    .carousel__item {
+      padding: 5vw 2vw;
+      .testimonial-quote {
+        font-size: 0.75vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 3840px) {
+  .testimonials {
+    .carousel__item {
+      padding: 0.5vw; 
+      .testimonial-quote {
+        font-size: 0.5vw;
       }
     }
   }

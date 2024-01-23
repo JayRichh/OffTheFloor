@@ -1,6 +1,6 @@
 import initAutoAnimate from './plugins/auto-animate';  
 import { createApp } from 'vue';
-import { Carousel, Slide } from 'vue3-carousel';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import router from './router';
 import App from './App.vue';
 
@@ -13,6 +13,8 @@ const app = createApp(App);
 app.use(router);
 app.component('Carousel', Carousel);
 app.component('Slide', Slide);
+app.component('Pagination', Pagination);
+app.component('Navigation', Navigation);
 
 initAutoAnimate(app);  
 
