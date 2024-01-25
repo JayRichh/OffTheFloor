@@ -61,7 +61,7 @@ const timetableData: Day[] = [
     sessions: [
       { time: '10:00', info: 'Mixed', price: '£8 - Kids Only' },
       { time: '11:00', info: 'Mixed', price: '£8 - Kids Only' },
-      { time: '12:00', info: 'Mixed', price: '£8 - Senior Kids/Adults Only' },
+      { time: '12:00', info: 'Mixed', price: '£8 - Senior Kids\n/Adults Only' },
     ],
   },
   {

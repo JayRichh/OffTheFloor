@@ -10,7 +10,7 @@
               <li class="list-group-item" v-for="(session, sIndex) in day.sessions" :key="sIndex">
                 <span class="time">{{ session.time }}</span>
                 <span class="info">{{ session.info }}</span>
-                <span class="price">{{ session.price }}</span>
+                <span class="price" v-html="formatPrice(session.price)"></span>
               </li>
             </ul>
             <div v-if="day.closed" class="closed-text">Closed</div>
@@ -36,13 +36,16 @@ import set7 from '@/assets/set7.png';
 
 const imageImports = [set1, set2, set3, set4, set5, set6, set7];
 
-// Assign images to the timetable data
 const dataWithImages = timetableData.map((day, index) => ({
   ...day,
   image: imageImports[index % imageImports.length]
 }));
 
 const data = ref(dataWithImages);
+
+const formatPrice = (price) => {
+  return price.replace(/\n/g, '<br>');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -63,19 +66,19 @@ const data = ref(dataWithImages);
     min-height: 220px;
 
     &:hover {
-      transform: translateY(-2px)
+      transform: translateY(-2px);
     }
 
     &.card-closed {
       background-color: #e9ecef;
       .card-header {
-        color: #fff;
+        color: #181414;
       }
       .closed-text {
         text-align: center;
-        font-size: 1.5rem; // Smaller text
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #6c757d;
+        color: #1b1a1aa8;
         margin-top: 2rem;
       }
     }
@@ -84,8 +87,8 @@ const data = ref(dataWithImages);
       position: absolute;
       top: 0px;
       right: 1rem;
-      width: 20%; 
-      height: auto; 
+      width: 20%;
+      height: auto;
       object-fit: contain;
       z-index: 0;
     }
@@ -93,40 +96,39 @@ const data = ref(dataWithImages);
     .card-header {
       background-color: transparent;
       padding: 0.75rem 1.25rem;
-      font-size: 1rem; // Smaller text
+      font-size: 1rem;
       font-weight: 700;
       color: #333;
       z-index: 1;
     }
 
     .card-body {
-      margin-top: 60px; 
+      margin-top: 60px;
       z-index: 1;
 
       .list-group-item {
         display: flex;
         justify-content: space-between;
-        padding: 0.25rem 0rem;
+        padding: 0.75rem 1rem;
         margin: 0;
-        border: none;
+        border-bottom: 1px solid #f0f0f0;
         background-color: transparent;
 
-        .time {
-          font-weight: 700;
-          font-size: 0.9rem;
-          text-wrap: nowrap;
+        &:nth-child(odd) {
+          background-color: #f9f9f9;
+        }
+
+        .time, .info, .price {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .info {
-          font-weight: 400;
-          font-size: 0.9rem; 
-          text-wrap: nowrap;
-        }
-
-        .price {
-          font-weight: 700;
-          font-size: 0.9rem;
-          text-wrap: nowrap;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 150px;
         }
       }
     }
@@ -135,13 +137,56 @@ const data = ref(dataWithImages);
   @media (max-width: 992px) {
     .row {
       .col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    .card {
+      .card-img-top {
+        width: 15%;
+        right: 0.5rem;
+      }
+
+      .card-header {
+        font-size: 0.9rem;
+      }
+
+      .card-body {
+        .list-group-item {
+          .time, .info, .price {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .row {
+      .col-lg-4 {
         flex: 0 0 100%;
         max-width: 100%;
       }
     }
 
-    img {
-      max-height: 100px;
+    .card {
+      .card-img-top {
+        width: 25%;
+        top: 0;
+      }
+
+      .card-header {
+        font-size: 0.85rem;
+      }
+
+      .card-body {
+        .list-group-item {
+          .time, .info, .price {
+            font-size: 0.8rem;
+          }
+        }
+      }
     }
   }
 }
@@ -157,11 +202,11 @@ const data = ref(dataWithImages);
 
 .spin {
   transition: all 0.2s ease;
-&:hover {
-  animation: rotate3d 2s linear infinite;
-  transform-style: preserve-3d;
-  perspective: 400px;
-  transform-origin: center;
+  &:hover {
+    animation: rotate3d 2s linear infinite;
+    transform-style: preserve-3d;
+    perspective: 400px;
+    transform-origin: center;
   }
 }
 </style>

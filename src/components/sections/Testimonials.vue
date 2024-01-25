@@ -19,10 +19,8 @@
               'is-side': index !== currentSlide,
               'is-active': isActiveTestimonial(index),
             }">
-            <div class="card-carousel__body "
-            :style="`overflow:hidden;`">
-              <blockquote class="blockquote "
-              :style="`overflow:hidden;`">
+            <div class="card-carousel__body">
+              <blockquote class="blockquote">
                 <p class="testimonial-quote ">{{ testimonial.quote }}</p>
                 <footer class="blockquote-footer ">
                   {{ testimonial.author }}
@@ -151,7 +149,7 @@ const isTablet = computed(() => window.innerWidth >= 768 && window.innerWidth < 
   align-items: center;
   justify-content: center;
   background-color: #f5f5f5;
-  height: 60vh;
+  height: 70vh;
   
   .carousel {
     min-height: 100%;
@@ -238,7 +236,7 @@ const isTablet = computed(() => window.innerWidth >= 768 && window.innerWidth < 
       padding: 2.5vw 4vw;
 
       .testimonial-quote {
-        font-size: 1.6vw;
+        font-size: 1.5vw;
       }
     }
   }
@@ -246,12 +244,13 @@ const isTablet = computed(() => window.innerWidth >= 768 && window.innerWidth < 
 
 @media (min-width: 1200px) {
   .testimonials {
-    padding: 2vh 0;
+    padding: 4vh 0;
 
     .carousel__item {
+      padding: 3vw; 
 
       .testimonial-quote {
-        font-size: 1.4vw;
+        font-size: 1vw;
       }
     }
   }

@@ -1,6 +1,7 @@
 <template>
   <div class="hero">
-    <video ref="backgroundVideo" :key="currentVid.value" class="video-background" autoplay loop muted playsinline>
+    <video ref="backgroundVideo" :key="currentVid.value" class="video-background"  loop muted playsinline> 
+      <!-- Add autoplay here to play video on load -->
       <source :src="currentVideoUrl" type="video/mp4">
     </video>
   </div>
@@ -68,7 +69,7 @@ onMounted(async () => {
   pointer-events: none;
   opacity: 0.8;
   z-index: 1;
-  animation: fadeIn 2s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
 
   &::after {
     content: '';

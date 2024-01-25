@@ -31,13 +31,18 @@
 </script>
 
 <style scoped lang="scss">
+footer {
+  width: 100%;
+  background-color: #333;
+  color: whitesmoke;
+  padding: 0;
+  margin: 0;
+}
 .site-footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px;
-  background-color: #333;
-  color: white;
   overflow: hidden;
 }
 
@@ -81,9 +86,7 @@
 .footer-info {
   font-size: 0.8rem;
   text-align: center;
-  background-color: #333;
   padding-bottom: 1rem;
-  color: whitesmoke;
   a {
     text-decoration: none;
     color: grey;

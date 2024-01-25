@@ -18,7 +18,6 @@ const uniqueKey = ref(crypto.randomUUID())
 
 onMounted(()=>{
   const { fullPath } = toRefs(route);
-  console.log(fullPath, route.toString())
 })
 </script>
 

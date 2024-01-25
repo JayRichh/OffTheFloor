@@ -20,7 +20,7 @@
   width: 60%;
   text-align: right;
   z-index: 2;
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
   overflow: hidden;
   padding: 0 0 1rem 0;
 

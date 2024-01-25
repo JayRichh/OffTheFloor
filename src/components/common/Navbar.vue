@@ -1,6 +1,6 @@
 <template>
-  <nav :class="['navbar navbar-expand-lg navbar-dark border-bottom', { 'home-route': isHomeRoute }]" :style="navbarStyle">
-    <div class="container-xxl" style="">
+  <nav :class="['navbar navbar-expand-lg navbar-dark border-bottom', { 'home-route': isHomeRoute },{ 'expanded': isDropdownOpen }]" :style="navbarStyle">
+    <div class="container-xxl" :class="{ 'expanded': isDropdownOpen }" v-auto-animate>
       <a class="navbar-brand" href="/">
         <img src="../../assets/transparent-logo.png" class="logo-img" />
       </a>
@@ -10,53 +10,58 @@
         <span class="navbar-toggler-icon" :class="{ 'open': isDropdownOpen }"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-center align-items-center" :class="{ show: isDropdownOpen && !isScrolled }">
-        <!-- Navigation links -->
-        <ul class="navbar-nav mb-2 primary-nav" v-auto-animate>
-          <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/">Home</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/classes">Classes</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/updates">Updates</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/contact-us">Contact</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link active-class="router-active" class="nav-link" to="/faq">FAQ</router-link>
-          </li>
-        </ul>
+      <transition name="slide-fade" >
 
-        <!-- Booking button and Social icons -->
-        <div class="d-flex justify-content-center flex-shrink-0" v-show="!isScrolled">
-          <div class="col-container">
-    
-            <div class="icon-container d-flex mt-lg-3 mobile-icons" v-auto-animate>
-              <i class="fab fa-facebook-f me-2 fa-2x"></i>
-              <i class="fab fa-youtube me-2 fa-2x"></i>
-              <i class="fab fa-instagram me-2 fa-2x"></i>
-              <i class="fab fa-twitter fa-2x"></i>
+        <div  class="collapse navbar-collapse justify-content-center align-items-center" :class="{ show: isDropdownOpen && !isScrolled }">
+            <!-- Navigation links -->
+          <ul class="navbar-nav mb-2 primary-nav" >
+            <li class="nav-item" >
+              <router-link active-class="router-active" class="nav-link" to="/">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link active-class="router-active" class="nav-link" to="/classes">Classes</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link active-class="router-active" class="nav-link" to="/updates">Updates</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link active-class="router-active" class="nav-link" to="/contact-us">Contact</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link active-class="router-active" class="nav-link" to="/faq">FAQ</router-link>
+            </li>
+          </ul>
+          
+          <!-- Booking button and Social icons -->
+          <div class="primary-nav-socials d-flex justify-content-center flex-shrink-0" v-show="!isScrolled">
+            <div class="col-container">
+              
+              <div class="icon-container d-flex mt-lg-3 mobile-icons" v-auto-animate>
+                <i class="fab fa-facebook-f me-2 fa-2x"></i>
+                <i class="fab fa-youtube me-2 fa-2x"></i>
+                <i class="fab fa-instagram me-2 fa-2x"></i>
+                <i class="fab fa-twitter fa-2x"></i>
+              </div>
+              
+              <button id="joinButton" class="btn btn-outline-secondary d-lg-flex mb-2 mb-lg-4 mt-lg-3 mx-auto">
+                {{ !isDropdownOpen ? 'BOOK YOUR SESSION' : "BOOK" }}
+              </button>
+              
             </div>
-
-            <button id="joinButton" class="btn btn-outline-secondary d-lg-flex mb-2 mb-lg-4 mt-lg-3 mx-auto">
-              BOOK YOUR SESSION
-            </button>
-            
           </div>
         </div>
-      </div>
+
+      </transition>
+      
     </div>
   </nav>
 
   <template v-if="isScrolled">
 
-    <nav class="secondary-navbar overflow-hidden container-xl" id="mate" :style="navbarSecondaryStyle" :class="{ 'show': isScrolled }" v-auto-animate>
+    <nav class="secondary-navbar overflow-hidden container-xl" id="mate" :style="navbarSecondaryStyle" :class="{ 'show': isScrolled }">
 
       <div class="container d-flex justify-content-between p-0">
-        <ul class="navbar-nav d-flex align-items-center">
+        <ul class="navbar-nav d-flex align-items-center" v-if="!isSecondaryDropdownOpen">
           <li class="nav-item d-block w-auto">
             <router-link active-class="router-active" class="nav-link" to="/" style="">Home</router-link>
           </li>
@@ -73,15 +78,17 @@
             <router-link active-class="router-active" class="nav-link" to="/faq">FAQ</router-link>
           </li>
         </ul>
-        <button class="navbar-toggler me-2 mt-1" type="button" @click="toggleSecondaryDropdown">
+        <button class="navbar-toggler me-1" type="button" @click="toggleSecondaryDropdown">
           <span class="navbar-toggler-icon" :class="{ 'open': isSecondaryDropdownOpen }"></span>
         </button>
       </div>
       <div class="d-flex align-items-center">
         <!-- Secondary Togglies -->
-        <div class="secondary-dropdown align-items-center pb-4  overflow-hidden" >
-          <transition-group name="flip-fade" v-show="isSecondaryDropdownOpen" v-auto-animate>
-            <i key="4" class="fab fa-facebook-f me-2 fa-2x pb-2"></i>
+        <transition name="slide-fade" v-auto-animate>
+
+          <div class="secondary-dropdown align-items-center pb-4  overflow-hidden" >
+            <transition-group name="flip-fade" v-show="isSecondaryDropdownOpen" v-auto-animate>
+              <i key="4" class="fab fa-facebook-f me-2 fa-2x pb-2"></i>
             <i key="3" class="fab fa-youtube me-2 fa-2x pb-2"></i>
             <i key="2" class="fab fa-instagram me-2 fa-2x pb-2"></i>
             <i key="1" class="fab fa-twitter fa-2x pb-2"></i>
@@ -90,6 +97,7 @@
             </button>
           </transition-group>
         </div>
+      </transition>
       </div>
     </nav>
   </template>
@@ -107,6 +115,10 @@ const scrollY = ref(0);
 const route = useRoute()
 const currentPath = computed(() => route.path)
 const isHomeRoute = computed(() => currentPath.value === '/');
+const routeChanged = watch(currentPath, () => {
+  isDropdownOpen.value = false
+  isSecondaryDropdownOpen.value = false
+})
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
@@ -200,17 +212,15 @@ nav {
     margin-bottom: -12rem;
   }
 }
-.navbar * {
-  overflow: hidden !important;
-}
+
 .router-active {
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-
 }
+
 #joinButton {
   text-align: center;
   cursor: pointer;
-  transition: box-shadow 1s ease-in-out;
+  transition: box-shadow 1s ease-in-out, background-color 1s ease-in-out;
   z-index: 5;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: #333333;
@@ -219,6 +229,7 @@ nav {
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
   }
 }
+
 .logo-img {
   height: 10rem;
   width: auto;
@@ -273,8 +284,6 @@ nav {
 
 .nav-link:hover {
   color: rgb(53, 53, 53);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-  margin-bottom: 0px;
 }
 
 .nav-placeholder {
@@ -293,6 +302,58 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+@media (max-width: 768px) {
+  .navbar-toggler {
+    top: 1rem;
+    right: 1rem;
+    display: block;
+    position: absolute;
+    margin: 0;
+    z-index: 9999;
+  }
+  .navbar .expanded {
+    min-height: 23rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  .expanded {
+    .navbar-nav {
+      top: 0rem;
+    }
+    img {
+      position: absolute;
+      height: 6rem;
+      top: 0.5rem;
+      left: 0.5rem;
+    }
+    .primary-nav-socials {
+      position: absolute;
+      top: 19rem;
+      left: 0;
+      right: 0;
+      width: 100%;
+      
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+    }
+    .navbar-collapse {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: transparent;
+    }
+  }
 }
 .secondary-navbar {
   position: fixed;
@@ -337,12 +398,28 @@ nav {
       height: 100%;
 
       &:hover {
+        transform: translateY(-2px);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.5);
       }
     }
   }
 
   .navbar-toggler {
     order: 2;
+  }
+
+  @media (max-width: 768px) {
+    .secondary-dropdown {
+      pointer-events: none;
+    }
+    .navbar-nav {
+      gap: 0.2rem;
+    }
+    .nav-link {
+      font-size: smaller;
+      padding: 0;
+      margin: 0;
+    }
   }
 }
 
@@ -370,7 +447,7 @@ button {
   transition: all 0.2s ease-in-out;
   &:hover {
     background-color: rgba(245, 245, 245, 0.685);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
 }
 
@@ -378,7 +455,7 @@ button {
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     cursor: pointer;
   }
 }
@@ -387,7 +464,7 @@ button {
   display: none;
   position: absolute;
   left: 0;
-  top: 60px; 
+  top: 100%; 
   width: 100%;
   background-color: white;
   transition: transform 0.3s ease-in-out;
@@ -402,6 +479,11 @@ button {
 @media (max-width: 768px) {
   .navbar-toggler {
     display: block; // Show only on mobile
+  }
+
+  .primary-nav {
+    top: 5rem;
+    
   }
 
   .mobile-dropdown {
@@ -529,5 +611,12 @@ button {
   .navbar-collapse {
     background-color: #f8f9fa;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
 }
 </style>
